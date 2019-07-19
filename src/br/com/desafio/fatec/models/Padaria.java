@@ -11,7 +11,8 @@ public class Padaria implements Caixa {
 	
 	private static Padaria instance;
 
-	private List<Bolo> listaBolos = new ArrayList<Bolo>();
+	private List<Bolo> listaBolosDisponiveis = new ArrayList<Bolo>();
+	private List<Bolo> listaBolosVendidos = new ArrayList<Bolo>();
 	private BigDecimal dinheiroCaixa = BigDecimal.ZERO;
 	private Fornalha fornalha = Fornalha.getInstance();
 	private Bolo boloSelecionado = null;
@@ -27,13 +28,14 @@ public class Padaria implements Caixa {
 		boolean sucesso = false;
 		
 		if(verificaSeTemOBoloNaGeladeira(ingrediente)) {
-			removeBolo(getBoloSelecionado());
-			setDinheiroCaixa(ingrediente.getPrecoBolo());
+			incluiBoloVendido(getBoloSelecionado());
+			removeBoloDisponivel(getBoloSelecionado());
+			addDinheiroCaixa(ingrediente.getPrecoBolo());
 			sucesso = true;
 		}
 		else {
 			Bolo bolo = fornalha.assar(ingrediente);
-			adicionaBolo(bolo);
+			incluiBoloDisponivel(bolo);
 		}
 		
 		return sucesso;
@@ -42,7 +44,7 @@ public class Padaria implements Caixa {
 	private boolean verificaSeTemOBoloNaGeladeira(Ingrediente ingrediente) {
 		boolean isBoloDisponivel = false;
 		
-		for(Bolo bolo : this.listaBolos) {
+		for(Bolo bolo : this.listaBolosDisponiveis) {
 			if(bolo.getNomeBolo().equals(ingrediente.getNomeBolo())) {
 				isBoloDisponivel = true;
 				setBoloSelecionado(bolo);
@@ -52,20 +54,28 @@ public class Padaria implements Caixa {
 		return isBoloDisponivel;
 	}
 	
-	private void adicionaBolo(Bolo bolo) {
-		this.listaBolos.add(bolo);
+	private void incluiBoloDisponivel(Bolo bolo) {
+		this.listaBolosDisponiveis.add(bolo);
 	}
 	
-	private void removeBolo(Bolo bolo) {
-		this.listaBolos.remove(bolo);
+	private void removeBoloDisponivel(Bolo bolo) {
+		this.listaBolosDisponiveis.remove(bolo);
 	}
 	
-	public List<Bolo> getListaBolos() {
-		return this.listaBolos;
+	public List<Bolo> getListaBolosDisponiveis() {
+		return this.listaBolosDisponiveis;
 	}
 
 	private Bolo getBoloSelecionado() {
 		return this.boloSelecionado;
+	}
+	
+	private void incluiBoloVendido(Bolo bolo) {
+		this.listaBolosVendidos.add(bolo);
+	}
+	
+	public List<Bolo> getListaBolosVendidos(){
+		return this.listaBolosVendidos;
 	}
 
 	private void setBoloSelecionado(Bolo boloSelecionado) {
@@ -76,8 +86,8 @@ public class Padaria implements Caixa {
 		return dinheiroCaixa;
 	}
 
-	public void setDinheiroCaixa(BigDecimal dinheiroCaixa) {
-		this.dinheiroCaixa.add(dinheiroCaixa);
+	public void addDinheiroCaixa(BigDecimal dinheiroCaixa) {
+		this.dinheiroCaixa = this.dinheiroCaixa.add(dinheiroCaixa);
 	}
 	
 	
