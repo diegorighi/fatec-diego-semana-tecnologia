@@ -4,5 +4,5 @@ import br.com.desafio.fatec.models.Bolo;
 
 public interface EquipamentoForno {
 
-	public abstract Bolo assar(Ingrediente elemento);
+	public abstract Bolo assarUmBoloDe(Ingrediente elemento);
 }

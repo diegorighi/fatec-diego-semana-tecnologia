@@ -16,7 +16,7 @@ public class TestandoForno {
 	@Test
 	public void assandoUmBoloDeCenoura() {
 		Fornalha fornalha = Fornalha.getInstance();
-		Bolo boloCenoura = fornalha.assar(new Cenoura());
+		Bolo boloCenoura = fornalha.assarUmBoloDe(new Cenoura());
 		
 		assertEquals("Bolo de cenoura", boloCenoura.getNomeBolo());
 		assertEquals("Doce", boloCenoura.getSaborBolo());
@@ -26,7 +26,7 @@ public class TestandoForno {
 	@Test
 	public void assandoUmBoloDeFrango() {
 		Fornalha fornalha = Fornalha.getInstance();
-		Bolo boloCenoura = fornalha.assar(new Frango());
+		Bolo boloCenoura = fornalha.assarUmBoloDe(new Frango());
 		
 		assertEquals("Bolo de frango", boloCenoura.getNomeBolo());
 		assertEquals("Salgado", boloCenoura.getSaborBolo());

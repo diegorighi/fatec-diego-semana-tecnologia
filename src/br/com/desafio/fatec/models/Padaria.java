@@ -27,24 +27,32 @@ public class Padaria implements Caixa {
 	public boolean venderBolo(Ingrediente ingrediente) {
 		boolean sucesso = false;
 		
-		if(verificaSeTemOBoloNaGeladeira(ingrediente)) {
-			incluiBoloVendido(getBoloSelecionado());
-			removeBoloDisponivel(getBoloSelecionado());
-			addDinheiroCaixa(ingrediente.getPrecoBolo());
+		if(verificaSeHaOBoloNoEstoque(ingrediente)) {
+			realizaVenda(ingrediente); 
 			sucesso = true;
 		}
 		else {
-			Bolo bolo = fornalha.assar(ingrediente);
-			incluiBoloDisponivel(bolo);
+			preparaUmBolo(ingrediente);
 		}
 		
 		return sucesso;
 	}
+
+	private void realizaVenda(Ingrediente ingrediente) {
+		incluiBoloVendido(getBoloSelecionado());
+		removeBoloDisponivel(getBoloSelecionado());
+		addDinheiroCaixa(ingrediente.getPrecoBolo());
+	}
 	
-	private boolean verificaSeTemOBoloNaGeladeira(Ingrediente ingrediente) {
+	private void preparaUmBolo(Ingrediente ingrediente) {
+		Bolo bolo = getFornalha().assarUmBoloDe(ingrediente);
+		disponibilizaBoloParaVenda(bolo);
+	}
+	
+	private boolean verificaSeHaOBoloNoEstoque(Ingrediente ingrediente) {
 		boolean isBoloDisponivel = false;
 		
-		for(Bolo bolo : this.listaBolosDisponiveis) {
+		for(Bolo bolo : getListaBolosDisponiveis()) {
 			if(bolo.getNomeBolo().equals(ingrediente.getNomeBolo())) {
 				isBoloDisponivel = true;
 				setBoloSelecionado(bolo);
@@ -54,7 +62,11 @@ public class Padaria implements Caixa {
 		return isBoloDisponivel;
 	}
 	
-	private void incluiBoloDisponivel(Bolo bolo) {
+	private Fornalha getFornalha() {
+		return this.fornalha;
+	}
+	
+	private void disponibilizaBoloParaVenda(Bolo bolo) {
 		this.listaBolosDisponiveis.add(bolo);
 	}
 	

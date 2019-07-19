@@ -14,7 +14,7 @@ public class Fornalha implements EquipamentoForno {
 	}
 	
 	@Override
-	public Bolo assar(Ingrediente elemento) {
+	public Bolo assarUmBoloDe(Ingrediente elemento) {
 		return new Bolo(elemento.getNomeBolo(), 
 				elemento.getSaborBolo(),
 				elemento.getPrecoBolo());
